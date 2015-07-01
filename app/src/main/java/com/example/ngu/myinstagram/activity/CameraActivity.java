@@ -1,5 +1,6 @@
 package com.example.ngu.myinstagram.activity;
 
+import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
@@ -26,6 +28,7 @@ import com.example.ngu.myinstagram.adapter.CameraPagerAdapter;
 import com.example.ngu.myinstagram.camera.layout.SlidingTabLayout;
 
 public class CameraActivity extends ActionBarActivity {
+    public static int height, width;
     ViewPager vp_camera;
     SlidingTabLayout sliding_tab_camera;
     CameraPagerAdapter pagerAdapter;
@@ -33,6 +36,8 @@ public class CameraActivity extends ActionBarActivity {
     int numberOfTabs = 3;
     //int num = 0;
     private Uri fileUri;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +62,24 @@ public class CameraActivity extends ActionBarActivity {
 //                finish();
 //            }
 //        });
+        //lay do cao man hinh
 
 
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        height = displaymetrics.heightPixels;
+        Log.e("------", "height:" + height);
+        width = displaymetrics.widthPixels;
+        Log.e("------", "width:" + width);
 
+    }
 
+    public static int getHeight() {
+        return height;
+    }
+
+    public static int getWidth() {
+        return width;
     }
 
 //    //nut back se ve mainactivity
@@ -71,9 +90,11 @@ public class CameraActivity extends ActionBarActivity {
 //        finish();
 //    }
 
-    /** Check if this device has a camera */
+    /**
+     * Check if this device has a camera
+     */
     private boolean checkCameraHardware(Context context) {
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             // this device has a camera
             return true;
         } else {
@@ -81,13 +102,15 @@ public class CameraActivity extends ActionBarActivity {
             return false;
         }
     }
-    /** A safe way to get an instance of the Camera object. */
-    public static Camera getCameraInstance(){
+
+    /**
+     * A safe way to get an instance of the Camera object.
+     */
+    public static Camera getCameraInstance() {
         Camera c = null;
         try {
             c = Camera.open(); // attempt to get a Camera instance
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             // Camera is not available (in use or does not exist)
         }
         return c; // returns null if camera is unavailable

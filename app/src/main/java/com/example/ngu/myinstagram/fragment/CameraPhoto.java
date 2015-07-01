@@ -2,22 +2,29 @@ package com.example.ngu.myinstagram.fragment;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.ngu.myinstagram.R;
+import com.example.ngu.myinstagram.activity.CameraActivity;
 import com.example.ngu.myinstagram.helper.CameraPreview;
 
 import java.io.File;
@@ -26,15 +33,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class CameraPhoto extends Fragment {
     public Camera mCamera;
     private CameraPreview mPreview;
+    FrameLayout preview;
     ImageButton button_capture;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     View rootView;
-    RelativeLayout rl_root_photo,rl_header_photo;
+    RelativeLayout rl_root_photo, rl_header_photo;
     FrameLayout fl_shoot_photo;
 
     @Override
@@ -50,9 +59,9 @@ public class CameraPhoto extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_camera_photo, container, false);
         button_capture = (ImageButton) rootView.findViewById(R.id.button_capture);
-        rl_root_photo=(RelativeLayout) rootView.findViewById(R.id.rl_root_photo);
-        rl_header_photo=(RelativeLayout) rootView.findViewById(R.id.rl_header_photo);
-        fl_shoot_photo=(FrameLayout) rootView.findViewById(R.id.fl_shoot_photo);
+        rl_root_photo = (RelativeLayout) rootView.findViewById(R.id.rl_root_photo);
+        rl_header_photo = (RelativeLayout) rootView.findViewById(R.id.rl_header_photo);
+        fl_shoot_photo = (FrameLayout) rootView.findViewById(R.id.fl_shoot_photo);
 
         if (checkCameraHardware(getActivity())) {
             //Create an instance of Camera
@@ -60,14 +69,24 @@ public class CameraPhoto extends Fragment {
             Toast.makeText(getActivity(), "camera is available :-)", Toast.LENGTH_SHORT).show();
             // Create our Preview view and set it as the content of our activity.
             mPreview = new CameraPreview(this.getActivity(), mCamera);
-            FrameLayout preview = (FrameLayout) rootView.findViewById(R.id.camera_preview);
-            //rootView.getWidth();
+            preview = (FrameLayout) rootView.findViewById(R.id.camera_preview);
+
             preview.addView(mPreview);
+
         } else {
             Toast.makeText(getActivity(), "camera not available o.O", Toast.LENGTH_SHORT).show();
         }
-        int heightOfShootLayout = button_capture.getHeight();//rl_header_photo.getHeight()
-        Log.e("------", heightOfShootLayout + "");
+
+
+        //how to create an W=H shape?
+        int height = CameraActivity.getHeight() - 250 - CameraActivity.getWidth();
+        //TO-DO
+// Gets the layout params that will allow you to resize the layout
+        ViewGroup.LayoutParams params = fl_shoot_photo.getLayoutParams();
+// Changes the height and width to the specified *pixels*
+        params.height = height;
+
+
         return rootView;
     }
 
@@ -79,9 +98,7 @@ public class CameraPhoto extends Fragment {
             @Override
             public void onClick(View v) {
                 if (isExternalStorageReadable() && isExternalStorageWritable()) {
-                    //mCamera.takePicture(null, null, mPicture);
                     takePhoto(mCamera);
-                    //releaseCamera();
                     Log.e("------", "OKAY External Storage");
                 } else {
                     Log.e("------", "couldn't find External Storage");
@@ -89,6 +106,19 @@ public class CameraPhoto extends Fragment {
                 button_capture.setEnabled(false);
             }
         });
+
+        // get Camera parameters
+        Camera.Parameters params = mCamera.getParameters();
+
+        List<String> focusModes = params.getSupportedFocusModes();
+        if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+            // Autofocus mode is supported
+            Log.e("------", focusModes.get(0) + "focusModes");
+        }
+        // set the focus mode
+        params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+// set Camera parameters
+        mCamera.setParameters(params);
 
 
     }
@@ -143,11 +173,11 @@ public class CameraPhoto extends Fragment {
                 fos.write(data);
                 fos.flush();
                 fos.close();
-                Log.e("-----creating FOS", "Okay");
+                Log.e("------", "creating FOS Okay");
             } catch (FileNotFoundException e) {
-                Log.e("-------File not found: ", e.getMessage());
+                Log.e("------", "File not found: " + e.getMessage());
             } catch (IOException e) {
-                Log.e("-------accessing", e.getMessage());
+                Log.e("------", "accessing" + e.getMessage());
             }
         }
     };
@@ -169,6 +199,8 @@ public class CameraPhoto extends Fragment {
         Log.e("------", Environment.getRootDirectory().toString());
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), "MyCameraApp");//MyCameraApp
+        Log.e("------", Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES).toString());
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
 
@@ -197,9 +229,10 @@ public class CameraPhoto extends Fragment {
         return mediaFile;
     }
 
+    // release the camera for other applications
     private void releaseCamera() {
         if (mCamera != null) {
-            mCamera.release();        // release the camera for other applications
+            mCamera.release();
             mCamera = null;
         }
     }
@@ -222,8 +255,11 @@ public class CameraPhoto extends Fragment {
         }
         return false;
     }
+
+    //take photo
     public static void takePhoto(Camera mCamera) {
         mCamera.startPreview();
         mCamera.takePicture(null, null, mPicture);
     }
+
 }

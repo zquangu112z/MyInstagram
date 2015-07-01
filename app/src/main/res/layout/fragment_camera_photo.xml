@@ -42,7 +42,7 @@
     </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="155dp"
         android:background="#232728"
         android:layout_alignParentBottom="true"
         android:layout_gravity="left|bottom"
