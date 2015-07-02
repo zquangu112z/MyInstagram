@@ -2,26 +2,15 @@ package com.example.ngu.myinstagram.fragment;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.Point;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
-import android.media.ExifInterface;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -30,6 +19,8 @@ import android.widget.Toast;
 import com.example.ngu.myinstagram.R;
 import com.example.ngu.myinstagram.activity.CameraActivity;
 import com.example.ngu.myinstagram.helper.CameraPreview;
+import com.example.ngu.myinstagram.helper.RotatePictureTask;
+import com.example.ngu.myinstagram.helper.SavePictureTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -95,14 +86,16 @@ public class CameraPhoto extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         button_capture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isExternalStorageReadable() && isExternalStorageWritable()) {
-                    takePhoto(mCamera);
+                    //takePhoto(mCamera);
+                    SavePictureTask savePictureTask = new SavePictureTask();
+                    savePictureTask.execute(mCamera);
                     Log.e("------", "OKAY External Storage");
                 } else {
                     Log.e("------", "couldn't find External Storage");
@@ -111,39 +104,30 @@ public class CameraPhoto extends Fragment {
             }
         });
 
+
+        /**
+         * Camera Features
+         */
         // get Camera parameters
         Camera.Parameters params = mCamera.getParameters();
-
         List<String> focusModes = params.getSupportedFocusModes();
         if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
             // Autofocus mode is supported
-            Log.e("------", focusModes.get(0) + "focusModes");
+            Log.e("------", "focusModes contains"+focusModes.get(0));
         }
         // set the focus mode
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-// set Camera parameters
+        // set Camera parameters
         mCamera.setParameters(params);
 
 
     }
 
-    /**
-     * Check if this device has a camera
-     */
-    private boolean checkCameraHardware(Context context) {
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-            // this device has a camera
-            return true;
-        } else {
-            // no camera on this device
-            return false;
-        }
-    }
 
     /**
      * A safe way to get an instance of the Camera object.
      */
-    public static Camera getCameraInstance() {
+    private static Camera getCameraInstance() {
         Camera c = null;
         try {
             c = Camera.open(); // attempt to get a Camera instance
@@ -159,7 +143,60 @@ public class CameraPhoto extends Fragment {
         releaseCamera();//neu khong lan sau truy cap camera ung dung se chet
     }
 
-    private static PictureCallback mPicture = new PictureCallback() {
+
+
+    /*release the camera for other applications*/
+    private void releaseCamera() {
+        if (mCamera != null) {
+            mCamera.release();
+            mCamera = null;
+        }
+    }
+
+    /* Checks if external storage is available for read and write */
+    private boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    /* Checks if external storage is available to at least read */
+    private boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    /* Check if this device has a camera     */
+    private boolean checkCameraHardware(Context context) {
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+            // this device has a camera
+            return true;
+        } else {
+            // no camera on this device
+            return false;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+/*luc chua tao luong rieng*/
+/*
+private static PictureCallback mPicture = new PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
 
@@ -183,19 +220,12 @@ public class CameraPhoto extends Fragment {
             } catch (IOException e) {
                 Log.e("------", "accessing" + e.getMessage());
             }
+
+            RotatePictureTask rotatePictureTask = new RotatePictureTask();
+            rotatePictureTask.execute(pictureFile);
         }
     };
 
-    /**
-     * Create a file Uri for saving an image or video
-     */
-    private static Uri getOutputMediaFileUri(int type) {
-        return Uri.fromFile(getOutputMediaFile(type));
-    }
-
-    /**
-     * Create a File for saving an image or video
-     */
     private static File getOutputMediaFile(int type) {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
@@ -229,67 +259,11 @@ public class CameraPhoto extends Fragment {
         } else {
             return null;
         }
-//them vao test xoay anh
-        BitmapFactory.Options bounds = new BitmapFactory.Options();
-        bounds.inJustDecodeBounds = true;
-        //IMG_20150701_213944.jpg
-        String x=mediaStorageDir.getAbsolutePath()+"/IMG_20150701_213944.jpg";
-        BitmapFactory.decodeFile(x, bounds);
 
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        Bitmap bm = BitmapFactory.decodeFile(x, opts);
-        ExifInterface exif = null;
-        try {
-            exif = new ExifInterface(x);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String orientString = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
-        int orientation = orientString != null ? Integer.parseInt(orientString) :  ExifInterface.ORIENTATION_NORMAL;
-
-        int rotationAngle = 0;
-        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) rotationAngle = 90;
-        if (orientation == ExifInterface.ORIENTATION_ROTATE_180) rotationAngle = 180;
-        if (orientation == ExifInterface.ORIENTATION_ROTATE_270) rotationAngle = 270;
-
-        Matrix matrix = new Matrix();
-        matrix.setRotate(rotationAngle, (float) bm.getWidth() / 2, (float) bm.getHeight() / 2);
-        Bitmap rotatedBitmap = Bitmap.createBitmap(bm, 0, 0, bounds.outWidth, bounds.outHeight, matrix, true);
-//them vao test xoay anh
         return mediaFile;
     }
-
-    // release the camera for other applications
-    private void releaseCamera() {
-        if (mCamera != null) {
-            mCamera.release();
-            mCamera = null;
-        }
-    }
-
-    /* Checks if external storage is available for read and write */
-    public boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-
-    /* Checks if external storage is available to at least read */
-    public boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-
     //take photo
-    public static void takePhoto(Camera mCamera) {
+    private static void takePhoto(Camera mCamera) {
         mCamera.startPreview();
         mCamera.takePicture(null, null, mPicture);
-    }
-
-}
+    }*/
