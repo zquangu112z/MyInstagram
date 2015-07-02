@@ -4,6 +4,9 @@ import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.example.ngu.myinstagram.activity.CameraActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,19 +19,21 @@ import java.util.Date;
  * Created by Ngu on 7/2/2015.
  */
 public class SavePictureTask extends AsyncTask<Camera, Void, Void> {
-
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     @Override
     protected Void doInBackground(Camera... params) {
         Camera camera=params[0];
         takePhoto(camera);
+
         return null;
     }
     //take photo
     public static void takePhoto(Camera mCamera) {
         mCamera.startPreview();
         mCamera.takePicture(null, null, mPicture);
+
+        mCamera.startPreview();
     }
     private static File getOutputMediaFile(int type) {
         // To be safe, you should check that the SDCard is mounted
@@ -93,8 +98,8 @@ public class SavePictureTask extends AsyncTask<Camera, Void, Void> {
                 Log.e("------", "accessing" + e.getMessage());
             }
 
-            RotatePictureTask rotatePictureTask=new RotatePictureTask();
-            rotatePictureTask.execute(pictureFile);
+//            RotatePictureTask rotatePictureTask=new RotatePictureTask();
+//            rotatePictureTask.execute(pictureFile);
         }
     };
 }

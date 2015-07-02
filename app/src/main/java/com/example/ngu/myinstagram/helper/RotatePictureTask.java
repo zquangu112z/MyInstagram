@@ -14,6 +14,8 @@ import java.io.IOException;
 
 /**
  * Created by Ngu on 7/2/2015.
+ * Truyen 1 file anh vao, no xoay anh do
+ * chu y dind dang anh
  */
 public class RotatePictureTask extends AsyncTask<File, Void, Void> {
 

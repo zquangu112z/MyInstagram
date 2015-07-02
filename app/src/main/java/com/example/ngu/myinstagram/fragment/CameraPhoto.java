@@ -2,6 +2,9 @@ package com.example.ngu.myinstagram.fragment;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.Bundle;
@@ -40,6 +43,8 @@ public class CameraPhoto extends Fragment {
     View rootView;
     RelativeLayout rl_root_photo, rl_header_photo;
     FrameLayout fl_shoot_photo;
+    ImageButton ic_flash;
+    int flash_state=1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,7 @@ public class CameraPhoto extends Fragment {
         rl_root_photo = (RelativeLayout) rootView.findViewById(R.id.rl_root_photo);
         rl_header_photo = (RelativeLayout) rootView.findViewById(R.id.rl_header_photo);
         fl_shoot_photo = (FrameLayout) rootView.findViewById(R.id.fl_shoot_photo);
+        ic_flash = (ImageButton) rootView.findViewById(R.id.ic_flash);
 
         if (checkCameraHardware(getActivity())) {
             //Create an instance of Camera
@@ -109,19 +115,44 @@ public class CameraPhoto extends Fragment {
          * Camera Features
          */
         // get Camera parameters
-        Camera.Parameters params = mCamera.getParameters();
+        final Camera.Parameters params = mCamera.getParameters();
+        //focus
         List<String> focusModes = params.getSupportedFocusModes();
-        if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
-            // Autofocus mode is supported
-            Log.e("------", "focusModes contains"+focusModes.get(0));
+        for (int i=0;i<focusModes.size();i++){
+            Log.e("------", "focusModes contains:" + i+" "+ focusModes.get(i));
         }
-        // set the focus mode
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        // set Camera parameters
+        //picture size
+        params.setPictureSize(640, 480);//thay doi kich co anh: 4:3
+        //chieu cua anh luu
+        params.setRotation(90);
+
         mCamera.setParameters(params);
 
+/**
+ * nut flash
+ */
+        ic_flash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flash_state=flash_state+1;
+                if (flash_state%2==0){
+                    ic_flash.setBackgroundResource(R.drawable.ic_flash_enable);
+                    params.setFlashMode("on");
+                    mCamera.setParameters(params);
+                }else {
+                    ic_flash.setBackgroundResource(R.drawable.ic_flash);
+                    params.setFlashMode("off");
+                    mCamera.setParameters(params);
+                }
 
+            }
+        });
     }
+    /**
+     * Convert touch position x:y to {@link Camera.Area} position -1000:-1000 to 1000:1000.
+     */
+
 
 
     /**
@@ -143,7 +174,18 @@ public class CameraPhoto extends Fragment {
         releaseCamera();//neu khong lan sau truy cap camera ung dung se chet
     }
 
-
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        //Create an instance of Camera
+//        mCamera = getCameraInstance();
+//        Toast.makeText(getActivity(), "camera is available :-)", Toast.LENGTH_SHORT).show();
+//        // Create our Preview view and set it as the content of our activity.
+//        mPreview = new CameraPreview(this.getActivity(), mCamera);
+//        preview = (FrameLayout) rootView.findViewById(R.id.camera_preview);
+//
+//        preview.addView(mPreview);
+//    }
 
     /*release the camera for other applications*/
     private void releaseCamera() {

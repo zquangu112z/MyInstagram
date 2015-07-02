@@ -55,4 +55,30 @@
             android:layout_gravity="center"
             />
     </FrameLayout>
+    <RelativeLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="7dp"
+        android:id="@+id/fl_ic_flash"
+        android:layout_above="@+id/fl_shoot_photo"
+        android:layout_alignRight="@+id/fl_shoot_photo">
+        <ImageButton
+            android:id="@+id/ic_flash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_flash"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="7dp"
+        android:id="@+id/fl_ic_change_camera"
+        android:layout_above="@+id/fl_shoot_photo"
+        android:layout_alignLeft="@+id/fl_shoot_photo">
+        <ImageButton
+            android:id="@+id/ic_change_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_change_camera"/>
+    </RelativeLayout>
 </RelativeLayout>

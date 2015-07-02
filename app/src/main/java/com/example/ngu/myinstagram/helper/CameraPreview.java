@@ -12,6 +12,7 @@ import android.view.SurfaceView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.List;
 
 /** A basic Camera preview class */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
@@ -31,15 +32,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
 
-//    public void surfaceCreated(SurfaceHolder holder) {
-//        // The Surface has been created, now tell the camera where to draw the preview.
-//        try {
-//            mCamera.setPreviewDisplay(holder);
-//            mCamera.startPreview();
-//        } catch (IOException e) {
-//            Log.d(TAG, "Error setting camera preview: " + e.getMessage());
-//        }
-//    }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
         // empty. Take care of releasing the Camera preview in your activity.
@@ -49,7 +41,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceCreated(SurfaceHolder holder) {
         // The Surface has been created, now tell the camera where to draw the preview.
         try {
-            mCamera.setDisplayOrientation(90);
+           mCamera.setDisplayOrientation(90);
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
         } catch (IOException e) {
@@ -57,21 +49,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
         Toast.makeText(getContext(),"chup di",Toast.LENGTH_SHORT).show();
 
-//        //copy
-//        Camera = Camera.open();
-//        mCamera.setDisplayOrientation(90);
-//        try {
-//            mCamera.setPreviewDisplay(holder);
-//            mCamera.setPreviewCallback(new PreviewCallback() {
 //
-//                @Override
-//                public void onPreviewFrame(byte[] data, Camera camera) {
-//                }
-//            });
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
