@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.ngu.myinstagram.MainActivity;
 import com.example.ngu.myinstagram.R;
 
 public class NotificationActivity extends ActionBarActivity {
@@ -35,5 +36,10 @@ public class NotificationActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        MainActivity.setTabHost();
     }
 }

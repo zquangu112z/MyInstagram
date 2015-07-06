@@ -70,7 +70,6 @@ public class CameraActivity extends ActionBarActivity {
                 finish();
             }
 
-
         });
         //TextView doi chu theo trang thai
         tv_camera_header_tittle = (TextView) findViewById(R.id.tv_camera_header_tittle);
@@ -149,10 +148,15 @@ public class CameraActivity extends ActionBarActivity {
         return width;
     }
 
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        finish();
+//    }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        //super.onBackPressed();
+        MainActivity.setTabHost();
     }
 
     public void setTextForTextView(TextView tv, String text) {

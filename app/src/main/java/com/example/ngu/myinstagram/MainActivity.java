@@ -8,11 +8,13 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ngu.myinstagram.activity.CameraActivity;
 import com.example.ngu.myinstagram.activity.HomeActivity;
@@ -22,14 +24,18 @@ import com.example.ngu.myinstagram.activity.UserActivity;
 
 
 public class MainActivity extends TabActivity {
+    int tab_num_current = 0;
+    int tab_num_past = 0;
     int tab_num = 0;
+    static int tab[] = {0, 0, 0, 0, 0};
+    static TabHost tabHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //loadTabs();
-        final TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
+        tabHost = (TabHost) findViewById(android.R.id.tabhost);
         tabHost.setup();
         TabHost.TabSpec spec1, spec2, spec3, spec4, spec5;
         spec1 = tabHost.newTabSpec("tab_id_1").setIndicator("", getApplicationContext().getResources().getDrawable(R.drawable.tab_home_selector)).setContent(new Intent().setClass(this, HomeActivity.class));
@@ -52,10 +58,15 @@ public class MainActivity extends TabActivity {
                 //sau khi o cameara activity ve thi tra ve dung activity truoc do
                 if (tabHost.getCurrentTab() == 2) {
 
-                    tabHost.setCurrentTab(tab_num);
+                    //tabHost.setCurrentTab(tab_num);
+                    //tabHost.setCurrentTab(tab_num_current);
+                    tabHost.setCurrentTab(tab[4]);
                     startActivity(new Intent(getApplicationContext(), CameraActivity.class));
                 }
-                tab_num = tabHost.getCurrentTab();
+                for (int i = 0; i < 5; i++) {
+                    Log.e("------", tab[i] + "");
+                }
+                moveTabNumber(tabHost.getCurrentTab());
             }
         });
 
@@ -74,4 +85,47 @@ public class MainActivity extends TabActivity {
         }
     }
 
+//    @Override
+//    public void onBackPressed() {
+//
+//        if (tab[4]==0){
+//            super.onBackPressed();
+//            Log.e("------","quay ve");
+//        }else {
+//            tabHost.setup();
+//            tabHost.setCurrentTab(tab[3]);
+//            Toast.makeText(getApplicationContext(),""+tabHost.getCurrentTab(),Toast.LENGTH_SHORT).show();
+//            moveTabNumber(tab, tabHost.getCurrentTab());
+//            Log.e("------", "quay ve");
+//        }
+//    }
+
+
+    public static void moveTabNumber(int num_current) {
+        if (num_current > tab[3]) {
+            tab[1] = tab[2];
+            tab[2] = tab[3];
+            tab[3] = tab[4];
+            tab[4] = num_current;
+        }
+    }
+
+    public static void setTabHost() {
+        int x=tabHost.getCurrentTab();
+        if (x > tab[3]) {
+            tabHost.setCurrentTab(tab[3]);
+            moveTabNumber(tab[3]);
+        }else if (x>tab[2]){
+            tabHost.setCurrentTab(tab[2]);
+            moveTabNumber(tab[2]);
+        }else if (x>tab[1]){
+            tabHost.setCurrentTab(tab[1]);
+            moveTabNumber(tab[1]);
+        }else{
+            tabHost.setCurrentTab(tab[0]);
+            for (int i=0;i<5;i++){
+                tab[i]=0;
+            }
+        }
+    }
 }

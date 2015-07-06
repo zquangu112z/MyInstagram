@@ -13,9 +13,6 @@ import android.widget.ImageButton;
 
 import com.example.ngu.myinstagram.R;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-
 public class UserFragment extends Fragment {
     ImageButton bt_three_point;
     View rootView;
@@ -34,12 +31,16 @@ public class UserFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        bt_three_point=(ImageButton) rootView.findViewById(R.id.bt_three_point);
         bt_three_point.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager =getFragmentManager();
                 FragmentTransaction transaction=fragmentManager.beginTransaction();
-                transaction.replace(R.id.fg_fragment_user,new UserFragmentFlow());
+                //transaction.remove(getParentFragment());
+
+                transaction.replace(getId(), new UserFragmentFlow());
+                transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
