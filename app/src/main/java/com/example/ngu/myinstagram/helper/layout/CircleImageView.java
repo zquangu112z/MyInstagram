@@ -18,6 +18,8 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.example.ngu.myinstagram.R;
+
 /*
  *tai mot file attrs.xml trong value
  <declare-styleable name="CircleImageView">
