@@ -18,7 +18,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,12 +38,19 @@ public class CameraActivity extends ActionBarActivity {
     int numberOfTabs = 3;
     //int num = 0;
     private Uri fileUri;
+    ImageButton bt_close_camera;
+    TextView tv_camera_header_tittle;
+    RelativeLayout rl_root_camera, rl_header_camera;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+
+        //Thay doi spinner thay vi textViewTittle
+        rl_root_camera = (RelativeLayout) findViewById(R.id.rl_root_camera);
+        rl_header_camera = (RelativeLayout) findViewById(R.id.rl_header_camera);
 
         vp_camera = (ViewPager) findViewById(R.id.vp_camera);
         vp_camera.setCurrentItem(1);
@@ -53,78 +62,18 @@ public class CameraActivity extends ActionBarActivity {
         sliding_tab_camera = (SlidingTabLayout) findViewById(R.id.sliding_tab_camera);
         sliding_tab_camera.setDistributeEvenly(true);
         sliding_tab_camera.setViewPager(vp_camera);
-        // super.onCreate(savedInstanceState);
 
-//        bt_close = (ImageButton) findViewById(R.id.bt_close);
-//        bt_close.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
-        //lay do cao man hinh
+        bt_close_camera = (ImageButton) findViewById(R.id.bt_close_camera);
+        bt_close_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
 
 
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        height = displaymetrics.heightPixels;
-        Log.e("------", "height:" + height);
-        width = displaymetrics.widthPixels;
-        Log.e("------", "width:" + width);
-
-    }
-
-    public static int getHeight() {
-        return height;
-    }
-
-    public static int getWidth() {
-        return width;
-    }
-
-//    //nut back se ve mainactivity
-//    @Override
-//    public void onBackPressed() {
-//        //super.onBackPressed();
-//        //startActivity(new Intent(getApplicationContext(), MainActivity.class));
-//        finish();
-//    }
-
-    /**
-     * Check if this device has a camera
-     */
-    private boolean checkCameraHardware(Context context) {
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-            // this device has a camera
-            return true;
-        } else {
-            // no camera on this device
-            return false;
-        }
-    }
-
-    /**
-     * A safe way to get an instance of the Camera object.
-     */
-    public static Camera getCameraInstance() {
-        Camera c = null;
-        try {
-            c = Camera.open(); // attempt to get a Camera instance
-        } catch (Exception e) {
-            // Camera is not available (in use or does not exist)
-        }
-        return c; // returns null if camera is unavailable
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-}
-
-
-/*//TextView doi chu theo trang thai
+        });
+        //TextView doi chu theo trang thai
+        tv_camera_header_tittle = (TextView) findViewById(R.id.tv_camera_header_tittle);
         sliding_tab_camera.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -134,15 +83,15 @@ public class CameraActivity extends ActionBarActivity {
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0: {
-                        tv_camera_header.setText("gallery");
+                        setTextForTextView(tv_camera_header_tittle, "gallery");
                         break;
                     }
                     case 1: {
-                        tv_camera_header.setText("photo");
+                        setTextForTextView(tv_camera_header_tittle, "photo");
                         break;
                     }
                     case 2: {
-                        tv_camera_header.setText("video");
+                        setTextForTextView(tv_camera_header_tittle, "video");
                         break;
                     }
 
@@ -154,27 +103,62 @@ public class CameraActivity extends ActionBarActivity {
 
             }
         });
+
+
+
         vp_camera.setOnGenericMotionListener(new View.OnGenericMotionListener() {
             @Override
             public boolean onGenericMotion(View v, MotionEvent event) {
                 int num = vp_camera.getCurrentItem();
                 Log.e("OnTouch------", "OKAY");
-                //tv_camera_header.set
                 switch (num) {
                     case 0: {
-                        tv_camera_header.setText("gallery");
+                        setTextForTextView(tv_camera_header_tittle, "gallery");
                         break;
                     }
                     case 1: {
-                        tv_camera_header.setText("photo");
+                        setTextForTextView(tv_camera_header_tittle, "photo");
                         break;
                     }
                     case 2: {
-                        tv_camera_header.setText("video");
+                        setTextForTextView(tv_camera_header_tittle, "video");
                         break;
                     }
-
                 }
                 return false;
             }
-        });*/
+        });
+
+
+        //lay do cao man hinh, dung cho cat hinh preview
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        height = displaymetrics.heightPixels;
+        Log.e("------", "height:" + height);
+        width = displaymetrics.widthPixels;
+        Log.e("------", "width:" + width);
+
+
+    }
+
+    public static int getHeight() {
+        return height;
+    }
+
+    public static int getWidth() {
+        return width;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    public void setTextForTextView(TextView tv, String text) {
+        tv.setText(text);
+    }
+
+}
+
+

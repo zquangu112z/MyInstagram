@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/rl_root_photo"
     >
-    <RelativeLayout
+    <!--<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#232728"
@@ -31,14 +31,14 @@
             android:textSize="21sp"
             android:layout_toRightOf="@+id/bt_close_photo"
             android:layout_toEndOf="@+id/bt_close_photo" />
-    </RelativeLayout>
+    </RelativeLayout>-->
     <FrameLayout
         android:id="@+id/camera_preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_above="@+id/frameLayout"
-        android:layout_below="@+id/rl_header_photo">
+        ><!--android:layout_below="@+id/rl_header_photo"--><!--50dp chua cho header-->
     </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"

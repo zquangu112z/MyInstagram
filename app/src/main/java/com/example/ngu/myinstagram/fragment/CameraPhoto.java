@@ -60,7 +60,7 @@ public class CameraPhoto extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_camera_photo, container, false);
         button_capture = (ImageButton) rootView.findViewById(R.id.button_capture);
         rl_root_photo = (RelativeLayout) rootView.findViewById(R.id.rl_root_photo);
-        rl_header_photo = (RelativeLayout) rootView.findViewById(R.id.rl_header_photo);
+        //rl_header_photo = (RelativeLayout) rootView.findViewById(R.id.rl_header_photo);
         fl_shoot_photo = (FrameLayout) rootView.findViewById(R.id.fl_shoot_photo);
         ic_flash = (ImageButton) rootView.findViewById(R.id.ic_flash);
 

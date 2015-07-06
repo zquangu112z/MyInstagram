@@ -98,8 +98,8 @@ public class SavePictureTask extends AsyncTask<Camera, Void, Void> {
                 Log.e("------", "accessing" + e.getMessage());
             }
 
-//            RotatePictureTask rotatePictureTask=new RotatePictureTask();
-//            rotatePictureTask.execute(pictureFile);
+            RotatePictureTask rotatePictureTask=new RotatePictureTask();
+            rotatePictureTask.execute(pictureFile);
         }
     };
 }

@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -31,7 +31,7 @@
             android:textAllCaps="true"
             android:textColor="#ffffff"
             android:textSize="21sp" />
-    </RelativeLayout>
+    </RelativeLayout>-->
 
     <FrameLayout
         android:id="@+id/camera_preview"
