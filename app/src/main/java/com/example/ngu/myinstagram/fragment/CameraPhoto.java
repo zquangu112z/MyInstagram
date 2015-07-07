@@ -24,12 +24,15 @@ import com.example.ngu.myinstagram.activity.CameraActivity;
 import com.example.ngu.myinstagram.helper.CameraPreview;
 import com.example.ngu.myinstagram.helper.RotatePictureTask;
 import com.example.ngu.myinstagram.helper.SavePictureTask;
+import com.example.ngu.myinstagram.helper.camera.CameraFocus;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+//import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -122,12 +125,27 @@ public class CameraPhoto extends Fragment {
             Log.e("------", "focusModes contains:" + i+" "+ focusModes.get(i));
         }
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+        List<Camera.Size> previewSizes = params.getSupportedPreviewSizes();
+        Log.e("------",previewSizes.toString());
+        //focus area
+        if (params.getMaxNumMeteringAreas() > 0){ // check that metering areas are supported
+            List<Camera.Area> meteringAreas = new ArrayList<Camera.Area>();
+
+            Rect areaRect1 = new Rect(-100, -100, 100, 100);    // specify an area in center of image
+            meteringAreas.add(new Camera.Area(areaRect1, 600)); // set weight to 60%
+            params.setMeteringAreas(meteringAreas);
+        }
         //picture size
         params.setPictureSize(640, 480);//thay doi kich co anh: 4:3
         //chieu cua anh luu
         params.setRotation(90);
 
         mCamera.setParameters(params);
+//        CameraFocus x=new CameraFocus();
+//        x.execute(mCamera);
+        /**
+         * Camera Features
+         */
 
 /**
  * nut flash
@@ -149,9 +167,6 @@ public class CameraPhoto extends Fragment {
             }
         });
     }
-    /**
-     * Convert touch position x:y to {@link Camera.Area} position -1000:-1000 to 1000:1000.
-     */
 
 
 

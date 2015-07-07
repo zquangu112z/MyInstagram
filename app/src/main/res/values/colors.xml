@@ -3,4 +3,6 @@
     <color name="blue_action_bar">#105687</color>
     <color name="grid_state_pressed">#1Affffff</color>
     <color name="grid_state_focused">#80000000</color>
+    <color name="high_flow_title">#90000000</color>text_flow
+    <color name="text_flow">#80000000</color>
 </resources>
