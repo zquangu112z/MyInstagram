@@ -1,14 +1,13 @@
 package com.example.ngu.myinstagram.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Matrix;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.hardware.Camera;
-import android.hardware.Camera.PictureCallback;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,20 +20,14 @@ import android.widget.Toast;
 
 import com.example.ngu.myinstagram.R;
 import com.example.ngu.myinstagram.activity.CameraActivity;
+import com.example.ngu.myinstagram.activity.EditPictureActivity;
 import com.example.ngu.myinstagram.helper.CameraPreview;
-import com.example.ngu.myinstagram.helper.RotatePictureTask;
 import com.example.ngu.myinstagram.helper.SavePictureTask;
-import com.example.ngu.myinstagram.helper.camera.CameraFocus;
+import com.example.ngu.myinstagram.helper.camera.MyFaceDetectionListener;
+import com.example.ngu.myinstagram.model.DataPicture;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 //import java.util.ArrayList;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
 
 public class CameraPhoto extends Fragment {
     public Camera mCamera;
@@ -47,13 +40,12 @@ public class CameraPhoto extends Fragment {
     RelativeLayout rl_root_photo, rl_header_photo;
     FrameLayout fl_shoot_photo;
     ImageButton ic_flash;
-    int flash_state=1;
+    int flash_state = 1;
+    byte dataPicture[];
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -70,6 +62,8 @@ public class CameraPhoto extends Fragment {
         if (checkCameraHardware(getActivity())) {
             //Create an instance of Camera
             mCamera = getCameraInstance();
+            mCamera.setFaceDetectionListener(new MyFaceDetectionListener());
+
             Toast.makeText(getActivity(), "camera is available :-)", Toast.LENGTH_SHORT).show();
             // Create our Preview view and set it as the content of our activity.
             mPreview = new CameraPreview(this.getActivity(), mCamera);
@@ -103,62 +97,55 @@ public class CameraPhoto extends Fragment {
             public void onClick(View v) {
                 if (isExternalStorageReadable() && isExternalStorageWritable()) {
                     //takePhoto(mCamera);
-                    SavePictureTask savePictureTask = new SavePictureTask();
+                    final SavePictureTask savePictureTask = new SavePictureTask();
                     savePictureTask.execute(mCamera);
+
+
+                    //waiting for savePictureTask complete
+                    Thread waiting = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while (savePictureTask.getStatus() == AsyncTask.Status.RUNNING) {
+                                SystemClock.sleep(2000);
+                                Log.e("------", "running");
+                            }
+                            Intent intentGoToEditPicture = new Intent(getActivity(), EditPictureActivity.class);
+                            startActivity(intentGoToEditPicture);
+                            Log.e("------", "finished");
+                        }
+                    });
+                    waiting.start();
+
+
                     Log.e("------", "OKAY External Storage");
                 } else {
                     Log.e("------", "couldn't find External Storage");
                 }
                 button_capture.setEnabled(false);
+//                Bundle bundleData = new Bundle();
+//                bundleData.putByteArray("data", DataPicture.x.getData());
+//                Intent intentGoToEditPicture = new Intent(getActivity(), EditPictureActivity.class);
+//                intentGoToEditPicture.putExtra("data",bundleData);
+//                startActivity(intentGoToEditPicture);
+
             }
         });
 
 
-        /**
-         * Camera Features
-         */
-        // get Camera parameters
-        final Camera.Parameters params = mCamera.getParameters();
-        //focus
-        List<String> focusModes = params.getSupportedFocusModes();
-        for (int i=0;i<focusModes.size();i++){
-            Log.e("------", "focusModes contains:" + i+" "+ focusModes.get(i));
-        }
-        params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        List<Camera.Size> previewSizes = params.getSupportedPreviewSizes();
-        Log.e("------",previewSizes.toString());
-        //focus area
-        if (params.getMaxNumMeteringAreas() > 0){ // check that metering areas are supported
-            List<Camera.Area> meteringAreas = new ArrayList<Camera.Area>();
-
-            Rect areaRect1 = new Rect(-100, -100, 100, 100);    // specify an area in center of image
-            meteringAreas.add(new Camera.Area(areaRect1, 600)); // set weight to 60%
-            params.setMeteringAreas(meteringAreas);
-        }
-        //picture size
-        params.setPictureSize(640, 480);//thay doi kich co anh: 4:3
-        //chieu cua anh luu
-        params.setRotation(90);
-
-        mCamera.setParameters(params);
-//        CameraFocus x=new CameraFocus();
-//        x.execute(mCamera);
-        /**
-         * Camera Features
-         */
-
 /**
  * nut flash
  */
+        //final Camera.Parameters params=mCamera.getParameters();
+        final Camera.Parameters params = mPreview.getParams();
         ic_flash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                flash_state=flash_state+1;
-                if (flash_state%2==0){
+                flash_state = flash_state + 1;
+                if (flash_state % 2 == 0) {
                     ic_flash.setBackgroundResource(R.drawable.ic_flash_enable);
                     params.setFlashMode("on");
                     mCamera.setParameters(params);
-                }else {
+                } else {
                     ic_flash.setBackgroundResource(R.drawable.ic_flash);
                     params.setFlashMode("off");
                     mCamera.setParameters(params);
@@ -167,7 +154,6 @@ public class CameraPhoto extends Fragment {
             }
         });
     }
-
 
 
     /**
@@ -189,18 +175,6 @@ public class CameraPhoto extends Fragment {
         releaseCamera();//neu khong lan sau truy cap camera ung dung se chet
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        //Create an instance of Camera
-//        mCamera = getCameraInstance();
-//        Toast.makeText(getActivity(), "camera is available :-)", Toast.LENGTH_SHORT).show();
-//        // Create our Preview view and set it as the content of our activity.
-//        mPreview = new CameraPreview(this.getActivity(), mCamera);
-//        preview = (FrameLayout) rootView.findViewById(R.id.camera_preview);
-//
-//        preview.addView(mPreview);
-//    }
 
     /*release the camera for other applications*/
     private void releaseCamera() {
@@ -239,88 +213,5 @@ public class CameraPhoto extends Fragment {
             return false;
         }
     }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-/*luc chua tao luong rieng*/
-/*
-private static PictureCallback mPicture = new PictureCallback() {
-        @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-
-            File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
-
-            Log.e("------", "vao picture");
-
-            if (pictureFile == null) {
-                Log.e("------", "creating null");
-                return;
-            }
-
-            try {
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(data);
-                fos.flush();
-                fos.close();
-                Log.e("------", "creating FOS Okay");
-            } catch (FileNotFoundException e) {
-                Log.e("------", "File not found: " + e.getMessage());
-            } catch (IOException e) {
-                Log.e("------", "accessing" + e.getMessage());
-            }
-
-            RotatePictureTask rotatePictureTask = new RotatePictureTask();
-            rotatePictureTask.execute(pictureFile);
-        }
-    };
-
-    private static File getOutputMediaFile(int type) {
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
-        Log.e("------", Environment.getExternalStorageState().toString());
-        Log.e("------", Environment.getRootDirectory().toString());
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "MyCameraApp");//MyCameraApp
-        Log.e("------", Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES).toString());
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                Log.d("MyCameraApp", "failed to create directory");
-                return null;
-            }
-
-        }
-
-        // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_" + timeStamp + ".jpg");
-        } else if (type == MEDIA_TYPE_VIDEO) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "VID_" + timeStamp + ".mp4");
-        } else {
-            return null;
-        }
-
-        return mediaFile;
-    }
-    //take photo
-    private static void takePhoto(Camera mCamera) {
-        mCamera.startPreview();
-        mCamera.takePicture(null, null, mPicture);
-    }*/

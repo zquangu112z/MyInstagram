@@ -4,9 +4,9 @@ import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.ngu.myinstagram.activity.CameraActivity;
+
+import com.example.ngu.myinstagram.model.DataPicture;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,20 +14,25 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * Created by Ngu on 7/2/2015.
  */
-public class SavePictureTask extends AsyncTask<Camera, Void, Void> {
+public class SavePictureTask extends AsyncTask<Camera, Void, Void>{
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
+
+
     @Override
     protected Void doInBackground(Camera... params) {
-        Camera camera=params[0];
+        Camera camera = params[0];
         takePhoto(camera);
 
         return null;
     }
+
+
     //take photo
     public static void takePhoto(Camera mCamera) {
         mCamera.startPreview();
@@ -35,6 +40,7 @@ public class SavePictureTask extends AsyncTask<Camera, Void, Void> {
 
         mCamera.startPreview();
     }
+
     private static File getOutputMediaFile(int type) {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
@@ -62,17 +68,15 @@ public class SavePictureTask extends AsyncTask<Camera, Void, Void> {
         if (type == MEDIA_TYPE_IMAGE) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "IMG_" + timeStamp + ".jpg");
-        }
-        else if (type == MEDIA_TYPE_VIDEO) {
+        } else if (type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "VID_" + timeStamp + ".mp4");
-        }
-        else {
+        } else {
             return null;
         }
-
         return mediaFile;
     }
+
     private static Camera.PictureCallback mPicture = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
@@ -98,8 +102,13 @@ public class SavePictureTask extends AsyncTask<Camera, Void, Void> {
                 Log.e("------", "accessing" + e.getMessage());
             }
 
-//            RotatePictureTask rotatePictureTask=new RotatePictureTask();
-//            rotatePictureTask.execute(pictureFile);
+            DataPicture.x.setData(data);
+            Log.e("------","test"+DataPicture.x.getData()[2]);
         }
     };
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+    }
 }
