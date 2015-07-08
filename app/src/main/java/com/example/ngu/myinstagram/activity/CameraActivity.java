@@ -1,28 +1,17 @@
 package com.example.ngu.myinstagram.activity;
 
-import android.app.Activity;
-import android.app.Instrumentation;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.hardware.Camera;
+
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ngu.myinstagram.MainActivity;
 import com.example.ngu.myinstagram.R;
@@ -41,7 +30,9 @@ public class CameraActivity extends ActionBarActivity {
     ImageButton bt_close_camera;
     TextView tv_camera_header_tittle;
     RelativeLayout rl_root_camera, rl_header_camera;
-
+public  CameraActivity instance(){
+    return CameraActivity.this;
+}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

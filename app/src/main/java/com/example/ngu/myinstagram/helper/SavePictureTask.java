@@ -1,11 +1,18 @@
 package com.example.ngu.myinstagram.helper;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
 
+import com.example.ngu.myinstagram.activity.CameraActivity;
+import com.example.ngu.myinstagram.fragment.CameraPhoto;
 import com.example.ngu.myinstagram.model.DataPicture;
 
 import java.io.File;
@@ -22,12 +29,17 @@ import java.util.concurrent.SynchronousQueue;
 public class SavePictureTask extends AsyncTask<Camera, Void, Void>{
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
+    static Activity activity_start_edit_activity;
 
+    public SavePictureTask(Activity activity_start_edit_activity) {
+        this.activity_start_edit_activity=activity_start_edit_activity;
+    }
 
     @Override
     protected Void doInBackground(Camera... params) {
         Camera camera = params[0];
         takePhoto(camera);
+        //camera.release();
 
         return null;
     }
@@ -38,7 +50,8 @@ public class SavePictureTask extends AsyncTask<Camera, Void, Void>{
         mCamera.startPreview();
         mCamera.takePicture(null, null, mPicture);
 
-        mCamera.startPreview();
+        //startAgain
+        // mCamera.startPreview();
     }
 
     private static File getOutputMediaFile(int type) {
@@ -103,7 +116,14 @@ public class SavePictureTask extends AsyncTask<Camera, Void, Void>{
             }
 
             DataPicture.x.setData(data);
-            Log.e("------","test"+DataPicture.x.getData()[2]);
+            Log.e("------", "test" + DataPicture.x.getData()[2]);
+
+
+
+            //start activity
+            Intent intent=new Intent("hello");
+            activity_start_edit_activity.sendBroadcast(intent);
+
         }
     };
 

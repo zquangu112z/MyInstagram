@@ -8,4 +8,7 @@
     <dimen name="high_flow_title">60dp</dimen>
     <dimen name="text_flow_title">23sp</dimen>
     <dimen name="text_flow">17sp</dimen>
+    <dimen name="ic_edit_choose_method">55dp</dimen>
+    <dimen name="text_edit_picture_recycler_view">17sp</dimen>
+
 </resources>

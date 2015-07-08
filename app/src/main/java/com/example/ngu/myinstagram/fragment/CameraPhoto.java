@@ -1,12 +1,16 @@
 package com.example.ngu.myinstagram.fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -26,6 +30,8 @@ import com.example.ngu.myinstagram.helper.SavePictureTask;
 import com.example.ngu.myinstagram.helper.camera.MyFaceDetectionListener;
 import com.example.ngu.myinstagram.model.DataPicture;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 //import java.util.ArrayList;
 
 
@@ -42,10 +48,32 @@ public class CameraPhoto extends Fragment {
     ImageButton ic_flash;
     int flash_state = 1;
     byte dataPicture[];
+    Handler handler;
+    AtomicBoolean isRunning;
+
+
+    BroadcastReceiver broadcastReceiver = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        IntentFilter intentFilter = new IntentFilter("hello");
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Intent intentGoToEditPicture = new Intent(getActivity(), EditPictureActivity.class);
+                startActivity(intentGoToEditPicture);
+
+            }
+        };
+        getActivity().registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(broadcastReceiver);
     }
 
     @Override
@@ -97,24 +125,24 @@ public class CameraPhoto extends Fragment {
             public void onClick(View v) {
                 if (isExternalStorageReadable() && isExternalStorageWritable()) {
                     //takePhoto(mCamera);
-                    final SavePictureTask savePictureTask = new SavePictureTask();
+                    final SavePictureTask savePictureTask = new SavePictureTask(getActivity());
                     savePictureTask.execute(mCamera);
 
 
                     //waiting for savePictureTask complete
-                    Thread waiting = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            while (savePictureTask.getStatus() == AsyncTask.Status.RUNNING) {
-                                SystemClock.sleep(2000);
-                                Log.e("------", "running");
-                            }
-                            Intent intentGoToEditPicture = new Intent(getActivity(), EditPictureActivity.class);
-                            startActivity(intentGoToEditPicture);
-                            Log.e("------", "finished");
-                        }
-                    });
-                    waiting.start();
+//                    final Thread waiting = new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            while (savePictureTask.getStatus() == AsyncTask.Status.RUNNING) {
+//                                SystemClock.sleep(1000);
+//                                Log.e("------", "running");
+//                            }
+//                            Intent intentGoToEditPicture = new Intent(getActivity(), EditPictureActivity.class);
+//                            startActivity(intentGoToEditPicture);
+//                            Log.e("------", "finished");
+//                        }
+//                    });
+//                    waiting.start();
 
 
                     Log.e("------", "OKAY External Storage");
@@ -122,11 +150,8 @@ public class CameraPhoto extends Fragment {
                     Log.e("------", "couldn't find External Storage");
                 }
                 button_capture.setEnabled(false);
-//                Bundle bundleData = new Bundle();
-//                bundleData.putByteArray("data", DataPicture.x.getData());
-//                Intent intentGoToEditPicture = new Intent(getActivity(), EditPictureActivity.class);
-//                intentGoToEditPicture.putExtra("data",bundleData);
-//                startActivity(intentGoToEditPicture);
+//broadcast
+
 
             }
         });

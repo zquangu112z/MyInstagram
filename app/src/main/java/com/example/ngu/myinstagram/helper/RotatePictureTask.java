@@ -16,6 +16,8 @@ import java.io.IOException;
  * Created by Ngu on 7/2/2015.
  * Truyen 1 file anh vao, no xoay anh do
  * chu y dind dang anh
+ *
+ * luc dau dinh xoay cai anh lai nhung bay gio khong can nua!
  */
 public class RotatePictureTask extends AsyncTask<File, Void, Void> {
 
@@ -60,7 +62,7 @@ public class RotatePictureTask extends AsyncTask<File, Void, Void> {
     }
 
     /**
-     * Create a File for saving an image or video
+     * luc dau dinh xoay cai anh lai nhung khong can nua!
      */
     private static Bitmap rotationPictureFile(File file) {
 
