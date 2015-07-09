@@ -111,20 +111,20 @@ public class MainActivity extends TabActivity {
     }
 
     public static void setTabHost() {
-        int x=tabHost.getCurrentTab();
+        int x = tabHost.getCurrentTab();
         if (x > tab[3]) {
             tabHost.setCurrentTab(tab[3]);
             moveTabNumber(tab[3]);
-        }else if (x>tab[2]){
+        } else if (x > tab[2]) {
             tabHost.setCurrentTab(tab[2]);
             moveTabNumber(tab[2]);
-        }else if (x>tab[1]){
+        } else if (x > tab[1]) {
             tabHost.setCurrentTab(tab[1]);
             moveTabNumber(tab[1]);
-        }else{
+        } else {
             tabHost.setCurrentTab(tab[0]);
-            for (int i=0;i<5;i++){
-                tab[i]=0;
+            for (int i = 0; i < 5; i++) {
+                tab[i] = 0;
             }
         }
     }

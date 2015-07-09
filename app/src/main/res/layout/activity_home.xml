@@ -10,12 +10,14 @@
         android:layout_height="50dp"
         android:background="@color/blue_action_bar"
         android:id="@+id/ll_home_header">
+
         <ImageView
             android:layout_marginLeft="20dp"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:src="@drawable/home_header"
-            android:id="@+id/iv_"/>
+            android:id="@+id/iv_" />
+
         <ImageButton
             android:scaleType="center"
             android:layout_width="50dp"

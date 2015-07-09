@@ -30,9 +30,10 @@ public class CameraActivity extends ActionBarActivity {
     ImageButton bt_close_camera;
     TextView tv_camera_header_tittle;
     RelativeLayout rl_root_camera, rl_header_camera;
-public  CameraActivity instance(){
-    return CameraActivity.this;
-}
+
+    public CameraActivity instance() {
+        return CameraActivity.this;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +96,6 @@ public  CameraActivity instance(){
         });
 
 
-
         vp_camera.setOnGenericMotionListener(new View.OnGenericMotionListener() {
             @Override
             public boolean onGenericMotion(View v, MotionEvent event) {
@@ -139,7 +139,7 @@ public  CameraActivity instance(){
         return width;
     }
 
-//    @Override
+    //    @Override
 //    public void onBackPressed() {
 //        super.onBackPressed();
 //        finish();

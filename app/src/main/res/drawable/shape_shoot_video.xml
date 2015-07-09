@@ -4,17 +4,17 @@
         <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
             <item>
                 <shape android:shape="oval">
-                    <solid android:color="#ffffff"/>
+                    <solid android:color="#ffffff" />
                 </shape>
             </item>
             <item android:right="2dp" android:left="2dp" android:bottom="2dp" android:top="2dp">
                 <shape android:shape="oval">
-                    <solid android:color="#dd174f"/>
+                    <solid android:color="#dd174f" />
                 </shape>
             </item>
             <item android:right="30dp" android:left="30dp" android:bottom="30dp" android:top="30dp">
                 <shape android:shape="oval">
-                    <solid android:color="#ef2945"/>
+                    <solid android:color="#ef2945" />
                 </shape>
             </item>
         </layer-list>
@@ -23,17 +23,17 @@
         <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
             <item>
                 <shape android:shape="oval">
-                    <solid android:color="#ffffff"/>
+                    <solid android:color="#ffffff" />
                 </shape>
             </item>
             <item android:right="2dp" android:left="2dp" android:bottom="2dp" android:top="2dp">
                 <shape android:shape="oval">
-                    <solid android:color="#dd1724"/>
+                    <solid android:color="#dd1724" />
                 </shape>
             </item>
             <item android:right="30dp" android:left="30dp" android:bottom="30dp" android:top="30dp">
                 <shape android:shape="oval">
-                    <solid android:color="#ef2936"/>
+                    <solid android:color="#ef2936" />
                 </shape>
             </item>
         </layer-list>

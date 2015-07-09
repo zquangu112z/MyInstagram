@@ -7,7 +7,7 @@ public class Filter {
     public String nameFilter;
     public int photoFilterId;
 
-    public Filter(int photoFilterId,String nameFilter) {
+    public Filter(int photoFilterId, String nameFilter) {
         this.nameFilter = nameFilter;
         this.photoFilterId = photoFilterId;
     }

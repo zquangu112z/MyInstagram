@@ -26,5 +26,4 @@ public class CameraGallery extends Fragment {
     }
 
 
-
 }

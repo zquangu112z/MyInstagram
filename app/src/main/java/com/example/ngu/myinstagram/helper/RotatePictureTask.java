@@ -16,7 +16,7 @@ import java.io.IOException;
  * Created by Ngu on 7/2/2015.
  * Truyen 1 file anh vao, no xoay anh do
  * chu y dind dang anh
- *
+ * <p/>
  * luc dau dinh xoay cai anh lai nhung bay gio khong can nua!
  */
 public class RotatePictureTask extends AsyncTask<File, Void, Void> {
@@ -32,10 +32,10 @@ public class RotatePictureTask extends AsyncTask<File, Void, Void> {
         //fileName
 
         /*lay fileName cua anh*/
-        String parts[]=name.split("/");
-        int end=parts.length;
-        String fileName=parts[end-1];
-        Log.e("------",fileName);
+        String parts[] = name.split("/");
+        int end = parts.length;
+        String fileName = parts[end - 1];
+        Log.e("------", fileName);
         /*lay fileName cua anh*/
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(

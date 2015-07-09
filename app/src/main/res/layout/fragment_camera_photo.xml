@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rl_root_photo"
-    >
+    android:id="@+id/rl_root_photo">
     <!--<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -37,9 +36,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_above="@+id/frameLayout"
-        ><!--android:layout_below="@+id/rl_header_photo"--><!--50dp chua cho header-->
+        android:layout_above="@+id/frameLayout"><!--android:layout_below="@+id/rl_header_photo"--><!--50dp chua cho header-->
     </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="155dp"
@@ -47,14 +46,15 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="left|bottom"
         android:id="@+id/fl_shoot_photo">
+
         <ImageButton
             android:id="@+id/button_capture"
             android:background="@drawable/shape_shoot_photo"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:layout_gravity="center"
-            />
+            android:layout_gravity="center" />
     </FrameLayout>
+
     <RelativeLayout
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -62,12 +62,14 @@
         android:id="@+id/fl_ic_flash"
         android:layout_above="@+id/fl_shoot_photo"
         android:layout_alignRight="@+id/fl_shoot_photo">
+
         <ImageButton
             android:id="@+id/ic_flash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_flash"/>
+            android:background="@drawable/ic_flash" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -75,10 +77,11 @@
         android:id="@+id/fl_ic_change_camera"
         android:layout_above="@+id/fl_shoot_photo"
         android:layout_alignLeft="@+id/fl_shoot_photo">
+
         <ImageButton
             android:id="@+id/ic_change_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_change_camera"/>
+            android:background="@drawable/ic_change_camera" />
     </RelativeLayout>
 </RelativeLayout>

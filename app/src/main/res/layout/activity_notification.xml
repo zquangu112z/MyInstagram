@@ -1,27 +1,27 @@
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-tools:context="com.example.ngu.myinstagram.activity.NotificationActivity">
-
-<RelativeLayout
-    android:id="@+id/ll_notification_header"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:background="@color/blue_action_bar">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="ACTIVITY"
-        android:textSize="21sp"
-        android:textColor="#fff"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"/>
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.ngu.myinstagram.activity.NotificationActivity">
+
+    <RelativeLayout
+        android:id="@+id/ll_notification_header"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/blue_action_bar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ACTIVITY"
+            android:textSize="21sp"
+            android:textColor="#fff"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp" />
 
 
-</RelativeLayout>
+    </RelativeLayout>
 
 </LinearLayout>
 

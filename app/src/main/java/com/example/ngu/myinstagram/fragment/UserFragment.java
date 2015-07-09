@@ -16,6 +16,7 @@ import com.example.ngu.myinstagram.R;
 public class UserFragment extends Fragment {
     ImageButton bt_three_point;
     View rootView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,19 +25,19 @@ public class UserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView=inflater.inflate(R.layout.fragment_user, container, false);
+        rootView = inflater.inflate(R.layout.fragment_user, container, false);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bt_three_point=(ImageButton) rootView.findViewById(R.id.bt_three_point);
+        bt_three_point = (ImageButton) rootView.findViewById(R.id.bt_three_point);
         bt_three_point.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager =getFragmentManager();
-                FragmentTransaction transaction=fragmentManager.beginTransaction();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
                 //transaction.remove(getParentFragment());
 
                 transaction.replace(getId(), new UserFragmentFlow());

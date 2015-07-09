@@ -11,13 +11,14 @@
         android:layout_height="50dp"
         android:background="@color/blue_action_bar"
         android:orientation="vertical">
+
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:background="@drawable/search_box"
-            android:id="@+id/bt_search_box"/>
+            android:id="@+id/bt_search_box" />
 
     </LinearLayout>
 

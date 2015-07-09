@@ -15,7 +15,9 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -24,6 +26,7 @@ import com.example.ngu.myinstagram.adapter.ChooseFilterRVAdapter;
 import com.example.ngu.myinstagram.model.DataPicture;
 import com.example.ngu.myinstagram.model.Filter;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,22 +37,22 @@ public class EditPictureActivity extends ActionBarActivity {
     RecyclerView rv_filter;
     private List<Filter> filters;
     RelativeLayout rl_filter;
+    ImageButton bt_close_edit;
 
     // This method creates an ArrayList that has three Person objects
 // Checkout the project associated with this tutorial on Github if
 // you want to use the same images.
     private void initializeData() {
         filters = new ArrayList<>();
-        filters.add(new Filter(R.drawable.filter_test,"name"));
-        filters.add(new Filter(R.drawable.filter_test,"name"));
-        filters.add(new Filter(R.drawable.filter_test,"name"));
-        filters.add(new Filter(R.drawable.filter_test,"name"));
-        filters.add(new Filter(R.drawable.filter_test,"name"));
-        filters.add(new Filter(R.drawable.filter_test,"name"));
-        filters.add(new Filter(R.drawable.filter_test,"name"));
-        filters.add(new Filter(R.drawable.filter_test,"name"));
+        filters.add(new Filter(R.drawable.filter_test, "name"));
+        filters.add(new Filter(R.drawable.filter_test, "name"));
+        filters.add(new Filter(R.drawable.filter_test, "name"));
+        filters.add(new Filter(R.drawable.filter_test, "name"));
+        filters.add(new Filter(R.drawable.filter_test, "name"));
+        filters.add(new Filter(R.drawable.filter_test, "name"));
+        filters.add(new Filter(R.drawable.filter_test, "name"));
+        filters.add(new Filter(R.drawable.filter_test, "name"));
     }
-
 
 
     @Override
@@ -58,9 +61,9 @@ public class EditPictureActivity extends ActionBarActivity {
         //setContentView(R.layout.test);
         setContentView(R.layout.activity_edit_picture);
         iv_result = (ImageView) findViewById(R.id.iv_result);
-        rv_filter=(RecyclerView) findViewById(R.id.rv_filter);
-        rl_filter=(RelativeLayout) findViewById(R.id.rl_filter);
-
+        rv_filter = (RecyclerView) findViewById(R.id.rv_filter);
+        rl_filter = (RelativeLayout) findViewById(R.id.rl_filter);
+        bt_close_edit = (ImageButton) findViewById(R.id.bt_close_edit);
         //Tinh chiu cao cua rv_filter
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -73,13 +76,17 @@ public class EditPictureActivity extends ActionBarActivity {
 //        params.height=height_rv_filter;
 
         //chuyen qua set do cao cua cai imageView cho nhanh hon
-        ViewGroup.LayoutParams params2= iv_result.getLayoutParams();
-        params2.height=width;
+        ViewGroup.LayoutParams params2 = iv_result.getLayoutParams();
+        params2.height = width;
 
 
         //get bitmap
         data = DataPicture.x.getData();
+        Log.e("------","size: "+data.length);
+        Log.e("------","size: "+data[0]+data[1]+data[2]+data[3]+data[4]+data[5]+data[6]+data[7]+data[8]+data[9]+data[10]+data[11]);
         bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+        ByteBuffer byteBuffer;
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -93,34 +100,41 @@ public class EditPictureActivity extends ActionBarActivity {
         thread.start();
 
 
-        LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         rv_filter.setLayoutManager(layoutManager);
         initializeData();
-        ChooseFilterRVAdapter chooseFilterRVAdapter=new ChooseFilterRVAdapter(filters);
+        ChooseFilterRVAdapter chooseFilterRVAdapter = new ChooseFilterRVAdapter(filters);
         rv_filter.setAdapter(chooseFilterRVAdapter);
 
-
+        bt_close_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
     }
-//xoay bitmap
-//    private static Bitmap rotationPictureBitmap(Bitmap bitmapx) {
-//        int rotationAngle = 90;
-//        Matrix matrix = new Matrix();
-//        matrix.setRotate(rotationAngle, (float) bitmapx.getWidth() / 2, (float) bitmapx.getHeight() / 2);
-//        Bitmap x = Bitmap.createBitmap(bitmapx, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-//        return x;
-//    }
-//xu li Bitmap
-private static Bitmap editFirstPictureBitmap(Bitmap bitmapx) {
-    int rotationAngle = 90;
-    Matrix matrix = new Matrix();
-    matrix.setRotate(rotationAngle, (float) bitmapx.getWidth() / 2, (float) bitmapx.getHeight() / 2);
-    Bitmap x = Bitmap.createBitmap(bitmapx, 0, 0, bitmap.getHeight(), bitmap.getHeight(), matrix, true);
-    //bitmap.getWidth()=>Height do cieu cao va chieu rong cua no bi nham trai nguoc nhau
-    return x;
-}
+
+    //xoay bitmap
+    private static Bitmap rotationPictureBitmap(Bitmap bitmapx) {
+        int rotationAngle = 90;
+        Matrix matrix = new Matrix();
+        matrix.setRotate(rotationAngle, (float) bitmapx.getWidth() / 2, (float) bitmapx.getHeight() / 2);
+        Bitmap x = Bitmap.createBitmap(bitmapx, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        return x;
+    }
+
+    //xu li khoi tao Bitmap
+    private static Bitmap editFirstPictureBitmap(Bitmap bitmapx) {
+        int rotationAngle = 90;
+        Matrix matrix = new Matrix();
+        matrix.setRotate(rotationAngle, (float) bitmapx.getWidth() / 2, (float) bitmapx.getHeight() / 2);
+        Bitmap x = Bitmap.createBitmap(bitmapx, 0, 0, bitmap.getHeight(), bitmap.getHeight(), matrix, true);
+        //bitmap.getWidth()=>Height do cieu cao va chieu rong cua no bi nham trai nguoc nhau
+        return x;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

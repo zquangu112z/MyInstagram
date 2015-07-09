@@ -1,5 +1,6 @@
 package com.example.ngu.myinstagram.fragment;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -34,15 +35,35 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 //import java.util.ArrayList;
 
-
+//class AsyncLoadPreview extends  AsyncTask<FrameLayout,Void,Void>{
+//    @Override
+//    protected Void doInBackground(FrameLayout... params) {
+//
+//        FrameLayout frameLayout=params[0];
+//
+//            //Create an instance of Camera
+//            CameraPhoto.mCamera = CameraPhoto.getCameraInstance();
+//            //mCamera.setFaceDetectionListener(new MyFaceDetectionListener());
+//
+//  //          Toast.makeText(getActivity(), "camera is available :-)", Toast.LENGTH_SHORT).show();
+//            // Create our Preview view and set it as the content of our activity.
+//        CameraPhoto x=new CameraPhoto();
+//            CameraPhoto.mPreview = new CameraPreview(x.getCustomContext(), CameraPhoto.mCamera);
+//            CameraPhoto.preview = (FrameLayout) CameraPhoto.rootView.findViewById(R.id.camera_preview);
+//
+//        CameraPhoto.preview.addView(CameraPhoto.mPreview);
+//
+//        return null;
+//    }
+//}
 public class CameraPhoto extends Fragment {
     public Camera mCamera;
-    private CameraPreview mPreview;
-    FrameLayout preview;
+    public CameraPreview mPreview;
+    public FrameLayout preview;
     ImageButton button_capture;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
-    View rootView;
+    public View rootView;
     RelativeLayout rl_root_photo, rl_header_photo;
     FrameLayout fl_shoot_photo;
     ImageButton ic_flash;
@@ -51,7 +72,9 @@ public class CameraPhoto extends Fragment {
     Handler handler;
     AtomicBoolean isRunning;
 
-
+    //public  Activity getCustomContext(){
+//    return this.getActivity();
+//}
     BroadcastReceiver broadcastReceiver = null;
 
     @Override
@@ -102,11 +125,12 @@ public class CameraPhoto extends Fragment {
         } else {
             Toast.makeText(getActivity(), "camera not available o.O", Toast.LENGTH_SHORT).show();
         }
+//        AsyncLoadPreview x=new AsyncLoadPreview();
+//        x.execute(preview);
 
 
         //how to create an W=H shape?
         int height = CameraActivity.getHeight() - 250 - CameraActivity.getWidth();
-        //TO-DO
 // Gets the layout params that will allow you to resize the layout
         ViewGroup.LayoutParams params = fl_shoot_photo.getLayoutParams();
 // Changes the height and width to the specified *pixels*
@@ -150,9 +174,6 @@ public class CameraPhoto extends Fragment {
                     Log.e("------", "couldn't find External Storage");
                 }
                 button_capture.setEnabled(false);
-//broadcast
-
-
             }
         });
 
@@ -184,7 +205,7 @@ public class CameraPhoto extends Fragment {
     /**
      * A safe way to get an instance of the Camera object.
      */
-    private static Camera getCameraInstance() {
+    public static Camera getCameraInstance() {
         Camera c = null;
         try {
             c = Camera.open(); // attempt to get a Camera instance
@@ -202,7 +223,7 @@ public class CameraPhoto extends Fragment {
 
 
     /*release the camera for other applications*/
-    private void releaseCamera() {
+    public void releaseCamera() {
         if (mCamera != null) {
             mCamera.release();
             mCamera = null;
@@ -210,7 +231,7 @@ public class CameraPhoto extends Fragment {
     }
 
     /* Checks if external storage is available for read and write */
-    private boolean isExternalStorageWritable() {
+    public boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             return true;
@@ -219,7 +240,7 @@ public class CameraPhoto extends Fragment {
     }
 
     /* Checks if external storage is available to at least read */
-    private boolean isExternalStorageReadable() {
+    public boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state) ||
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
@@ -229,7 +250,7 @@ public class CameraPhoto extends Fragment {
     }
 
     /* Check if this device has a camera     */
-    private boolean checkCameraHardware(Context context) {
+    public boolean checkCameraHardware(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             // this device has a camera
             return true;

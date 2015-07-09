@@ -19,7 +19,7 @@ public class UserFragmentFlow extends Fragment {
 
     int status_bt_user_flow_save_original_picture = 1;
     int status_bt_user_flow_save_video = 0;
-    int status_bt_user_flow_privacy_account=0;
+    int status_bt_user_flow_privacy_account = 0;
     View rootView;
     RelativeLayout rl_user_flow_find_friend_facebook;
     RelativeLayout rl_user_flow_find_friend_contact;
@@ -44,7 +44,7 @@ public class UserFragmentFlow extends Fragment {
         rl_user_flow_find_friend_contact = (RelativeLayout) rootView.findViewById(R.id.rl_user_flow_find_friend_contact);
         bt_user_flow_save_original_picture = (ImageButton) rootView.findViewById(R.id.bt_user_flow_save_original_picture);
         bt_user_flow_save_video = (ImageButton) rootView.findViewById(R.id.bt_user_flow_save_video);
-        bt_user_flow_privacy_account=(ImageButton) rootView.findViewById(R.id.bt_user_flow_privacy_account);
+        bt_user_flow_privacy_account = (ImageButton) rootView.findViewById(R.id.bt_user_flow_privacy_account);
         return rootView;
     }
 

@@ -13,14 +13,15 @@ import com.example.ngu.myinstagram.R;
 import com.example.ngu.myinstagram.fragment.UserFragment;
 
 public class UserActivity extends ActionBarActivity {
-Fragment fragment;
+    Fragment fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        FragmentManager fragmentManager=getFragmentManager();
-        FragmentTransaction transaction=fragmentManager.beginTransaction();
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.fg_fragment_user, new UserFragment());
         transaction.commit();
     }

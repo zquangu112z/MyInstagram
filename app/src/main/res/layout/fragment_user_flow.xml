@@ -78,7 +78,7 @@
                     android:gravity="center_vertical"
                     android:text="Find Facebook Friends"
                     android:textSize="@dimen/text_flow"
-                    android:textColor="@color/text_flow"/>
+                    android:textColor="@color/text_flow" />
 
                 <ImageButton
                     android:id="@+id/bt_user_flow_find_friend_facebook"
@@ -203,7 +203,7 @@
                     android:layout_centerVertical="true"
                     android:text="Change Password"
                     android:textSize="@dimen/text_flow"
-                    android:textColor="@color/text_flow"/>
+                    android:textColor="@color/text_flow" />
 
             </RelativeLayout>
 
@@ -245,7 +245,7 @@
                     android:layout_centerVertical="true"
                     android:text="Private Account"
                     android:textSize="@dimen/text_flow"
-                    android:textColor="@color/text_flow"/>
+                    android:textColor="@color/text_flow" />
 
                 <ImageButton
                     android:id="@+id/bt_user_flow_privacy_account"
@@ -275,7 +275,7 @@
                     android:layout_centerVertical="true"
                     android:text="When your account is private, only people you approve can see your photos and videos. your existing folloers won't be affected"
                     android:textSize="@dimen/text_flow"
-                    android:textColor="@color/text_flow"/>
+                    android:textColor="@color/text_flow" />
             </RelativeLayout>
             <!--Settings-->
             <TextView
@@ -323,7 +323,7 @@
                     android:layout_centerVertical="true"
                     android:text="Push Notifications"
                     android:textSize="@dimen/text_flow"
-                    android:textColor="@color/text_flow"/>
+                    android:textColor="@color/text_flow" />
             </RelativeLayout>
 
             <ImageView
@@ -363,7 +363,7 @@
                     android:layout_centerVertical="true"
                     android:text="Cellular Data Use"
                     android:textSize="@dimen/text_flow"
-                    android:textColor="@color/text_flow"/>
+                    android:textColor="@color/text_flow" />
 
             </RelativeLayout>
 
@@ -415,7 +415,7 @@
                     android:layout_centerVertical="true"
                     android:text="Save Videos After Posting"
                     android:textSize="@dimen/text_flow"
-                    android:textColor="@color/text_flow"/>
+                    android:textColor="@color/text_flow" />
 
                 <ImageButton
                     android:id="@+id/bt_user_flow_save_video"
@@ -424,8 +424,9 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                   android:background="@drawable/ic_button_slide_unselected"
-                    android:scaleType="center" /><!-- android:background="@drawable/shape_button_sliding"-->
+                    android:background="@drawable/ic_button_slide_unselected"
+                    android:scaleType="center" />
+                <!-- android:background="@drawable/shape_button_sliding"-->
             </RelativeLayout>
 
             <ImageView
@@ -445,7 +446,7 @@
                     android:layout_centerVertical="true"
                     android:text="Saving videos to your phone uses more storage space"
                     android:textSize="@dimen/text_flow"
-                    android:textColor="@color/text_flow"/>
+                    android:textColor="@color/text_flow" />
             </RelativeLayout>
             <!--SUPPORT-->
             <TextView
@@ -657,7 +658,7 @@
                     android:layout_centerVertical="true"
                     android:text="Clear Search History"
                     android:textSize="@dimen/text_flow"
-                    android:textColor="@color/text_flow"/>
+                    android:textColor="@color/text_flow" />
             </RelativeLayout>
 
             <ImageView

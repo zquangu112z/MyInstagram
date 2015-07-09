@@ -11,6 +11,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
+
         <ImageView
             android:id="@+id/filter_photo"
             android:layout_width="match_parent"
@@ -30,7 +31,7 @@
             android:textSize="@dimen/text_edit_picture_recycler_view"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:gravity="center"/>
+            android:gravity="center" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -1,9 +1,6 @@
 package com.example.ngu.myinstagram.helper;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.AsyncTask;
@@ -11,8 +8,6 @@ import android.os.Environment;
 import android.util.Log;
 
 
-import com.example.ngu.myinstagram.activity.CameraActivity;
-import com.example.ngu.myinstagram.fragment.CameraPhoto;
 import com.example.ngu.myinstagram.model.DataPicture;
 
 import java.io.File;
@@ -21,18 +16,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.SynchronousQueue;
 
 /**
  * Created by Ngu on 7/2/2015.
  */
-public class SavePictureTask extends AsyncTask<Camera, Void, Void>{
+public class SavePictureTask extends AsyncTask<Camera, Void, Void> {
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     static Activity activity_start_edit_activity;
 
     public SavePictureTask(Activity activity_start_edit_activity) {
-        this.activity_start_edit_activity=activity_start_edit_activity;
+        this.activity_start_edit_activity = activity_start_edit_activity;
     }
 
     @Override
@@ -118,10 +112,9 @@ public class SavePictureTask extends AsyncTask<Camera, Void, Void>{
             DataPicture.x.setData(data);
             Log.e("------", "test" + DataPicture.x.getData()[2]);
 
-
-
+            camera.release();
             //start activity
-            Intent intent=new Intent("hello");
+            Intent intent = new Intent("hello");
             activity_start_edit_activity.sendBroadcast(intent);
 
         }
