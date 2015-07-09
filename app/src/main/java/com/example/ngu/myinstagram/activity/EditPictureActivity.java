@@ -81,39 +81,12 @@ public class EditPictureActivity extends ActionBarActivity {
         Log.e("------", "size: " + data[0] + data[1] + data[2] + data[3] + data[4] + data[5] + data[6] + data[7] + data[8] + data[9] + data[10] + data[11]);
         bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
 
-
-        int size=bitmap.getRowBytes() * bitmap.getHeight();
-        ByteBuffer byteBuffer = ByteBuffer.allocate(size);
-        bitmap.copyPixelsToBuffer(byteBuffer);
-        byte[] bytes = byteBuffer.array();
-        Log.e("------","length"+bytes.length);
-
-        String test_byte="start";
-        for (int i = 0; i < 100; i++) {
-            test_byte=test_byte+"*"+(int) (bytes[i]);
-        }
-        byteBuffer.rewind();
-        for (int i = 0; i < bytes.length; i++) {
-
-                bytes[i]= (byte) (bytes[i]-127);
-
-        }
-        try{
-            byteBuffer.get(bytes);
-            byteBuffer.rewind();
-        }catch (BufferUnderflowException e){
-            Log.e("------","wtf");
-        }
-        Log.e("------","test_byte".concat(test_byte));
-        //bitmap=Bitmap.createBitmap(480,640, Bitmap.Config.ARGB_8888);
-        bitmap.copyPixelsFromBuffer(byteBuffer);
-
+        bitmap = minus127(bitmap);
 
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                //Bitmap bitmap1 = rotationPictureBitmap(bitmap);
                 Bitmap bitmapFirst = editFirstPictureBitmap(bitmap);
                 iv_result.setImageBitmap(bitmapFirst);
             }
@@ -176,5 +149,62 @@ public class EditPictureActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public Bitmap minus127(Bitmap bitmap) {
+        int size = bitmap.getRowBytes() * bitmap.getHeight();
+        ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+        bitmap.copyPixelsToBuffer(byteBuffer);
+        byte[] bytes = byteBuffer.array();
+        Log.e("------", "length" + bytes.length);
+
+        String test_byte = "start";
+        for (int i = 0; i < 100; i++) {
+            test_byte = test_byte + "*" + (int) (bytes[i]);
+        }
+        byteBuffer.rewind();
+        for (int i = 0; i < bytes.length; i++) {
+
+            bytes[i] = (byte) (bytes[i] - 127);
+
+        }
+        try {
+            byteBuffer.get(bytes);
+            byteBuffer.rewind();
+        } catch (BufferUnderflowException e) {
+            Log.e("------", "wtf");
+        }
+        Log.e("------", "test_byte".concat(test_byte));
+        bitmap.copyPixelsFromBuffer(byteBuffer);
+        iv_result.setImageBitmap(bitmap);
+        return bitmap;
+    }
+    public Bitmap minus100(Bitmap bitmap) {
+        int size = bitmap.getRowBytes() * bitmap.getHeight();
+        ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+        bitmap.copyPixelsToBuffer(byteBuffer);
+        byte[] bytes = byteBuffer.array();
+        Log.e("------", "length" + bytes.length);
+
+        String test_byte = "start";
+        for (int i = 0; i < 100; i++) {
+            test_byte = test_byte + "*" + (int) (bytes[i]);
+        }
+        byteBuffer.rewind();
+        for (int i = 0; i < bytes.length; i++) {
+
+            bytes[i] = (byte) (bytes[i] - 100);
+
+        }
+        try {
+            byteBuffer.get(bytes);
+            byteBuffer.rewind();
+        } catch (BufferUnderflowException e) {
+            Log.e("------", "wtf");
+        }
+        Log.e("------", "test_byte".concat(test_byte));
+        bitmap.copyPixelsFromBuffer(byteBuffer);
+        iv_result.setImageBitmap(bitmap);
+        return bitmap;
     }
 }
