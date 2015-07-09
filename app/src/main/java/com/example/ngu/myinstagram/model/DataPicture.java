@@ -17,18 +17,4 @@ public class DataPicture {
             x.data[i] = data[i];
         }
     }
-
-    public static DataPicture x_thumbnails = new DataPicture();
-    private byte[] data_thumbnails;
-
-    public byte[] getData_thumbnails() {
-        return x_thumbnails.data_thumbnails;
-    }
-
-    public void setData_thumbnails(byte[] data) {
-        x_thumbnails.data_thumbnails = new byte[data_thumbnails.length];
-        for (int i = 0; i < data_thumbnails.length; i++) {
-            x_thumbnails.data_thumbnails[i] = data[i];
-        }
-    }
 }

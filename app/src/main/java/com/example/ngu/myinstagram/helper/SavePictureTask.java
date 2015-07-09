@@ -33,6 +33,7 @@ public class SavePictureTask extends AsyncTask<Camera, Void, Void> {
     protected Void doInBackground(Camera... params) {
         Camera camera = params[0];
         takePhoto(camera);
+        //camera.release();
 
         return null;
     }
@@ -50,12 +51,12 @@ public class SavePictureTask extends AsyncTask<Camera, Void, Void> {
     private static File getOutputMediaFile(int type) {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
-//        Log.e("------", Environment.getExternalStorageState().toString());
-//        Log.e("------", Environment.getRootDirectory().toString());
+        Log.e("------", Environment.getExternalStorageState().toString());
+        Log.e("------", Environment.getRootDirectory().toString());
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), "MyCameraApp");//MyCameraApp
-//        Log.e("------", Environment.getExternalStoragePublicDirectory(
-//                Environment.DIRECTORY_PICTURES).toString());
+        Log.e("------", Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES).toString());
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
 
@@ -82,6 +83,7 @@ public class SavePictureTask extends AsyncTask<Camera, Void, Void> {
         }
         return mediaFile;
     }
+
     private static Camera.PictureCallback mPicture = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
@@ -111,14 +113,10 @@ public class SavePictureTask extends AsyncTask<Camera, Void, Void> {
             Log.e("------", "test" + DataPicture.x.getData()[2]);
 
             camera.release();
-
-            SaveThumbnailsTask saveThumbnailsTask=new SaveThumbnailsTask();
-            saveThumbnailsTask.execute(data);
-
-
             //start activity
             Intent intent = new Intent("hello");
             activity_start_edit_activity.sendBroadcast(intent);
+
         }
     };
 
