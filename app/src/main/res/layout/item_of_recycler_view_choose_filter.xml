@@ -19,7 +19,8 @@
             android:layout_above="@+id/filter_name"
             android:layout_centerHorizontal="true"
             android:background="@color/edit_picture_recycler_view"
-            android:src="@drawable/ic_flash" />
+            android:src="@drawable/ic_flash"
+            />
 
         <TextView
             android:id="@+id/filter_name"
