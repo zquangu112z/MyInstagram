@@ -26,6 +26,8 @@ import com.example.ngu.myinstagram.adapter.ChooseFilterRVAdapter;
 import com.example.ngu.myinstagram.model.DataPicture;
 import com.example.ngu.myinstagram.model.Filter;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,43 +60,62 @@ public class EditPictureActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.test);
         setContentView(R.layout.activity_edit_picture);
         iv_result = (ImageView) findViewById(R.id.iv_result);
         rv_filter = (RecyclerView) findViewById(R.id.rv_filter);
         rl_filter = (RelativeLayout) findViewById(R.id.rl_filter);
         bt_close_edit = (ImageButton) findViewById(R.id.bt_close_edit);
-        //Tinh chiu cao cua rv_filter
+        //Tinh chieu cao cua rv_filter
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-//        int  height = displaymetrics.heightPixels;
-//        Log.e("------", "height:" + height);
         int width = displaymetrics.widthPixels;
         Log.e("------", "width:" + width);
-//        int height_rv_filter=height-width-270;
-//        ViewGroup.LayoutParams params= rl_filter.getLayoutParams();
-//        params.height=height_rv_filter;
-
         //chuyen qua set do cao cua cai imageView cho nhanh hon
         ViewGroup.LayoutParams params2 = iv_result.getLayoutParams();
         params2.height = width;
 
 
         //get bitmap
-        data = DataPicture.x.getData();
-        Log.e("------","size: "+data.length);
-        Log.e("------","size: "+data[0]+data[1]+data[2]+data[3]+data[4]+data[5]+data[6]+data[7]+data[8]+data[9]+data[10]+data[11]);
+        data = DataPicture.x.getData();//root
+        Log.e("------", "size: " + data.length);
+        Log.e("------", "size: " + data[0] + data[1] + data[2] + data[3] + data[4] + data[5] + data[6] + data[7] + data[8] + data[9] + data[10] + data[11]);
         bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
 
-        ByteBuffer byteBuffer;
+
+        int size=bitmap.getRowBytes() * bitmap.getHeight();
+        ByteBuffer byteBuffer = ByteBuffer.allocate(size);
+        bitmap.copyPixelsToBuffer(byteBuffer);
+        byte[] bytes = byteBuffer.array();
+        Log.e("------","length"+bytes.length);
+
+        String test_byte="start";
+        for (int i = 0; i < 100; i++) {
+            test_byte=test_byte+"*"+(int) (bytes[i]);
+        }
+        byteBuffer.rewind();
+        for (int i = 0; i < bytes.length; i++) {
+
+                bytes[i]= (byte) (bytes[i]-127);
+
+        }
+        try{
+            byteBuffer.get(bytes);
+            byteBuffer.rewind();
+        }catch (BufferUnderflowException e){
+            Log.e("------","wtf");
+        }
+        Log.e("------","test_byte".concat(test_byte));
+        //bitmap=Bitmap.createBitmap(480,640, Bitmap.Config.ARGB_8888);
+        bitmap.copyPixelsFromBuffer(byteBuffer);
+
+
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 //Bitmap bitmap1 = rotationPictureBitmap(bitmap);
-                Bitmap bitmap1 = editFirstPictureBitmap(bitmap);
-                //iv_result.setScaleType(ImageView.ScaleType.CENTER);
-                iv_result.setImageBitmap(bitmap1);
+                Bitmap bitmapFirst = editFirstPictureBitmap(bitmap);
+                iv_result.setImageBitmap(bitmapFirst);
             }
         });
         thread.start();
